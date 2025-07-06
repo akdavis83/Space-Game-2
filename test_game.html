@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Space Game - Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        
+        .game-container {
+            text-align: center;
+        }
+        
+        #space {
+            border: 2px solid #00ffcc;
+            display: block;
+            margin: 0 auto;
+            cursor: none;
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-list {
+            text-align: left;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .feature-list h3 {
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .feature-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .feature-list li:before {
+            content: "✓ ";
+            color: #00ff00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Enhanced Space Game</h1>
+        <canvas id="space" width="800" height="600"></canvas>
+        
+        <div class="instructions">
+            <h2>Game Controls</h2>
+            <p><strong>Mouse:</strong> Move to control ship direction</p>
+            <p><strong>Space Bar or Click:</strong> Fire bullets</p>
+            <p><strong>P:</strong> Pause/Resume game</p>
+            <p><strong>R:</strong> Restart when game over</p>
+            
+            <div class="feature-list">
+                <h3>Enhanced Features:</h3>
+                <ul>
+                    <li>Improved ship graphics with detailed design</li>
+                    <li>Enhanced enemy ships with different types and behaviors</li>
+                    <li>Proper collision detection system</li>
+                    <li>Game menu with score tracking</li>
+                    <li>Health system for both player and enemies</li>
+                    <li>Multiple enemy types: Basic, Fast, Heavy, Hunter</li>
+                    <li>Visual effects: explosions, trails, shields</li>
+                    <li>Progressive difficulty scaling</li>
+                    <li>Lives system and game over screen</li>
+                    <li>Pause functionality</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/vector.js"></script>
+    <script type="text/javascript" src="js/gamestate.js"></script>
+    <script type="text/javascript" src="js/collision.js"></script>
+    <script type="text/javascript" src="js/gamemenu.js"></script>
+    <script type="text/javascript" src="js/enhanced-ship.js"></script>
+    <script type="text/javascript" src="js/gameconsole.js"></script>
+    <script type="text/javascript" src="js/starseffect.js"></script>
+    <script type="text/javascript" src="js/enhanced-enemy.js"></script>
+    <script type="text/javascript" src="js/enhanced-game.js"></script>
+</body>
+</html>
