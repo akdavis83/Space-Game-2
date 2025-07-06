@@ -24,6 +24,9 @@ function angle_to_vector(angle) {
 
 function normalize_vector(v) {
     let l = vector_length(v);
+    if (l === 0 || isNaN(l)) {
+        return [0, 0]; // Handle zero-length vectors
+    }
     return [v[0] / l, v[1] / l];
 }
 

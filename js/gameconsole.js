@@ -38,9 +38,14 @@ function GameConsole(documentId) {
     }
 
     function eventLoop() {
-        update();
-        render();
-        setTimeout(eventLoop, deltaTime);
+        try {
+            update();
+            render();
+            setTimeout(eventLoop, deltaTime);
+        } catch (error) {
+            console.error('Game loop error:', error);
+            // Stop the game loop on error to prevent freezing
+        }
     }
 
     this.start = function() {
@@ -55,4 +60,7 @@ function GameConsole(documentId) {
     this.addMouseMoveListener = function(listener) {
         mouseMoveListeners.push(listener);
     };
+    
+    this.canvas = canvas;
+    this.context = context;
 }

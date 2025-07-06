@@ -49,7 +49,16 @@
             const enemy = enemies[i];
             const stillAlive = enemy.update(deltaTime);
             
-            if (!stillAlive) {
+            if (!stillAlive || enemy.destroyed) {
+                enemies.splice(i, 1);
+            }
+        }
+        
+        // Clean up off-screen enemies to prevent memory leaks
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            const enemy = enemies[i];
+            if (enemy.position[0] < -100 || enemy.position[0] > gameConsole.canvas.width + 100 ||
+                enemy.position[1] < -100 || enemy.position[1] > gameConsole.canvas.height + 100) {
                 enemies.splice(i, 1);
             }
         }
@@ -94,15 +103,34 @@
     function handleCollisions() {
         const bullets = ship.getBullets();
         
+        // Limit collision checks to prevent performance issues
+        if (bullets.length > 100) {
+            console.warn('Too many bullets, limiting collision checks');
+            bullets.splice(50); // Remove excess bullets
+        }
+        
+        if (enemies.length > 50) {
+            console.warn('Too many enemies, limiting collision checks');
+            enemies.splice(30); // Remove excess enemies
+        }
+        
         // Bullet-Enemy collisions
         const bulletEnemyCollisions = collisionSystem.checkBulletEnemyCollisions(bullets, enemies);
         
-        bulletEnemyCollisions.forEach(collision => {
-            const destroyed = collision.enemy.takeDamage(25);
-            ship.removeBullet(collision.bulletIndex);
-            
-            if (destroyed) {
-                gameState.incrementScore(collision.enemy.getPoints());
+        // Process collisions in reverse order to avoid index issues
+        bulletEnemyCollisions.reverse().forEach(collision => {
+            if (collision.bulletIndex < bullets.length && collision.enemyIndex < enemies.length) {
+                const destroyed = collision.enemy.takeDamage(25);
+                ship.removeBullet(collision.bulletIndex);
+                
+                if (destroyed) {
+                    gameState.incrementScore(collision.enemy.getPoints());
+                    // Remove destroyed enemy from array
+                    const enemyIndex = enemies.indexOf(collision.enemy);
+                    if (enemyIndex > -1) {
+                        enemies.splice(enemyIndex, 1);
+                    }
+                }
             }
         });
         
@@ -110,10 +138,16 @@
         if (!ship.invulnerable) {
             const playerEnemyCollisions = collisionSystem.checkPlayerEnemyCollisions(ship, enemies);
             
-            playerEnemyCollisions.forEach(collision => {
+            playerEnemyCollisions.reverse().forEach(collision => {
                 ship.takeDamage(20);
                 collision.enemy.destroy();
                 gameState.loseLife();
+                
+                // Remove enemy from array
+                const enemyIndex = enemies.indexOf(collision.enemy);
+                if (enemyIndex > -1) {
+                    enemies.splice(enemyIndex, 1);
+                }
             });
         }
     }
